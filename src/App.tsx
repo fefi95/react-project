@@ -1,7 +1,9 @@
+import ProfileForm from "./ProfileForm"
+
 const App = (): JSX.Element => {
   return (
     <>
-      <h1>Spotify match</h1>
+      <ProfileForm></ProfileForm>
     </>
   )
 }
