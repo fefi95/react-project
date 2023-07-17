@@ -1,11 +1,11 @@
-import AuthorizationPage from './pages/AuthorizationPage'
+import AuthorizationPage from "./pages/AuthorizationPage";
 
 const App = (): JSX.Element => {
   return (
     <>
       <AuthorizationPage></AuthorizationPage>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
