@@ -1,9 +1,9 @@
-import ProfileForm from "./ProfileForm"
+import AuthorizationPage from './pages/AuthorizationPage'
 
 const App = (): JSX.Element => {
   return (
     <>
-      <ProfileForm></ProfileForm>
+      <AuthorizationPage></AuthorizationPage>
     </>
   )
 }
