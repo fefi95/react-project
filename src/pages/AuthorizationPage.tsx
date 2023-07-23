@@ -52,7 +52,7 @@ const AuthorizationPage = (): JSX.Element => {
     <VStack direction="row">
       <Flex alignItems="center" justifyContent="center">
         <Heading as="h1" py="5">
-          Log in to spotify
+          Log in to Spotify
         </Heading>
       </Flex>
       <Flex alignItems="center" justifyContent="center">
