@@ -17,8 +17,8 @@ const AuthorizationPage = (): JSX.Element => {
     return u1 !== null ? JSON.parse(u1) : null;
   };
 
-  const [user1, setUser1] = useState<User | null>((getUser(USER1) != null) || null);
-  const [user2, setUser2] = useState<User | null>((getUser(USER2) != null) || null);
+  const [user1, setUser1] = useState<User | null>(getUser(USER1) || null);
+  const [user2, setUser2] = useState<User | null>(getUser(USER2) || null);
 
   const setUser = async (
     token: string,

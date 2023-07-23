@@ -5,6 +5,12 @@ export interface User {
   username: string;
 }
 
+export interface AuthenticationToken {
+  access_token: string;
+  expires_in: string;
+  token_type: string;
+}
+
 export const authorizationLink = (): string => {
   const endpoint = "https://accounts.spotify.com/authorize";
   const clientId = "c885059149324ef1b5d431e6e84c5500";
@@ -16,17 +22,19 @@ export const authorizationLink = (): string => {
   )}&response_type=token&show_dialog=true`;
 };
 
-export const getTokenFromURL = (url: string): any => {
-  return url
-    .substring(1)
-    .split("&")
-    .reduce(function (initial, item) {
-      if (item) {
-        const parts = item.split("=");
-        initial[parts[0]] = decodeURIComponent(parts[1]);
-      }
-      return initial;
-    }, {});
+export const getTokenFromURL = (query: string): AuthenticationToken | null => {
+  return query
+    ? (query
+        .substring(1)
+        .split("&")
+        .reduce(function (initial, item) {
+          if (item) {
+            const parts = item.split("=");
+            initial[parts[0]] = decodeURIComponent(parts[1]);
+          }
+          return initial;
+        }, {}) as AuthenticationToken)
+    : null;
 };
 
 export const authorization = async (
