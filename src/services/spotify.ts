@@ -87,13 +87,12 @@ export const getProfile = async (token: string): Promise<User> => {
   };
 };
 
-export const getTopTracks = async (token: string): any => {
-  // Endpoint reference : https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks
+export const getTopTracks = async (token: string): Promise<any> => {
   return (
     await fetchWebApi(
       token,
-      "v1/me/top/tracks?time_range=short_term&limit=5",
+      "v1/me/top/tracks?time_range=short_term&limit=10",
       "GET",
     )
-  ).items;
+  );
 };
