@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Link, VStack } from "@chakra-ui/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import {
   type User,
   authorizationLink,
@@ -12,11 +12,6 @@ import { User1Context, User2Context } from "../contexts/User";
 const AuthorizationPage = (): JSX.Element => {
   const USER1 = "USER1";
   const USER2 = "USER2";
-
-  // const getUser = (user: string): User | null => {
-  //   const u1 = localStorage.getItem(user);
-  //   return u1 !== null ? JSON.parse(u1) : null;
-  // };
 
   const [user1, setUser1] = useContext(User1Context);
   const [user2, setUser2] = useContext(User2Context);
@@ -37,8 +32,6 @@ const AuthorizationPage = (): JSX.Element => {
     }
 
     const mToken: any = getTokenFromURL(window.location.hash);
-    // const u1 = getUser(USER1);
-    // const u2 = getUser(USER2);
 
     if (mToken && user1 == null) {
       setUser(mToken.access_token, USER1, setUser1);
