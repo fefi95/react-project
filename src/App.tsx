@@ -1,9 +1,11 @@
-const App = () => {
+import AuthorizationPage from "./pages/AuthorizationPage";
+
+const App = (): JSX.Element => {
   return (
     <>
-      <h1>Spotify match</h1>
+      <AuthorizationPage></AuthorizationPage>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
