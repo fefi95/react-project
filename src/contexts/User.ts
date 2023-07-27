@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { User } from "../services/spotify";
+import { type User } from "../services/spotify";
 
 export type UserState = [
   User | null,

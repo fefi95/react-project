@@ -31,7 +31,7 @@ const AuthorizationPage = (): JSX.Element => {
       return;
     }
 
-    const mToken: any = getTokenFromURL(window.location.hash);
+    const mToken = getTokenFromURL(window.location.hash);
 
     if (mToken && user1 == null) {
       setUser(mToken.access_token, USER1, setUser1);
@@ -69,8 +69,11 @@ const AuthorizationPage = (): JSX.Element => {
           )}
         </Box>
       </Flex>
-      (user1 !== null && user2 !== null ?{" "}
-      <Link href="/matching_tracks">Check matching tracks</Link> : <></>)
+      {user1 !== null && user2 !== null ? (
+        <Link href="/matching_tracks">Check matching tracks</Link>
+      ) : (
+        <></>
+      )}
     </VStack>
   );
 };

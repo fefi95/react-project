@@ -4,6 +4,7 @@ import MatchingTracks from "./pages/MatchingTracksPage.tsx";
 import { User1Context, User2Context } from "./contexts/User.ts";
 import { User } from "./services/spotify.ts";
 import { useState } from "react";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,9 @@ const App = (): JSX.Element => {
     <>
       <User1Context.Provider value={user1State}>
         <User2Context.Provider value={user2State}>
-          <RouterProvider router={router} />
+          <ErrorBoundary fallback={<p>Something went wrong</p>}>
+            <RouterProvider router={router} />
+          </ErrorBoundary>
         </User2Context.Provider>
       </User1Context.Provider>
     </>

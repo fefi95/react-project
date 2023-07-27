@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import { Track as TrackType } from "../services/spotify";
+import { type Track as TrackType } from "../services/spotify";
 
 interface TrackProps {
   track: TrackType;

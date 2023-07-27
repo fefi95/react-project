@@ -3,14 +3,15 @@ import {
   type Track as TrackType,
   type User,
 } from "../services/spotify";
-import { useEffect, useState } from "react";
-import { useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { User1Context, User2Context } from "../contexts/User";
 import Track from "../components/Track";
+import { useNavigate } from "react-router-dom";
 
 const MatchingTracks = (): JSX.Element => {
   const [user1, setUser1] = useContext(User1Context);
   const [user2, setUser2] = useContext(User2Context);
+  const navigate = useNavigate();
 
   const [user1TopTracks, setUser1TopTracks] = useState<TrackType[]>([]);
   const [user2TopTracks, setUser2TopTracks] = useState<TrackType[]>([]);
@@ -18,18 +19,19 @@ const MatchingTracks = (): JSX.Element => {
   const fetchTopTracks = async (
     user: User,
     setTopTrack: React.Dispatch<React.SetStateAction<any[]>>,
-  ) => {
+  ): Promise<void> => {
     const topTracks = await getTopTracks(user.token);
     setTopTrack(topTracks.items);
   };
 
   useEffect(() => {
-    if (user1 !== null) {
-      fetchTopTracks(user1, setUser1TopTracks);
+    if (user1 == null || user2 == null) {
+      navigate("/");
+      return;
     }
-    if (user2 !== null) {
-      fetchTopTracks(user2, setUser2TopTracks);
-    }
+
+    fetchTopTracks(user1, setUser1TopTracks);
+    fetchTopTracks(user2, setUser2TopTracks);
   }, [user1, user2]);
 
   const matchingTracks = (
