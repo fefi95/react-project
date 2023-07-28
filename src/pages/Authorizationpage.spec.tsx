@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { RenderResult, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import AuthorizationPage from "./AuthorizationPage";
 import { vi } from "vitest";
@@ -24,7 +24,7 @@ describe("AuthorizationPage", () => {
     ui: React.ReactElement,
     value1: UserState = [null, () => null],
     value2: UserState = [null, () => null],
-  ) => {
+  ): RenderResult => {
     return render(
       <User1Context.Provider value={value1}>
         <User2Context.Provider value={value2}>{ui}</User2Context.Provider>

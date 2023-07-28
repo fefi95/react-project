@@ -1,4 +1,3 @@
-import { Text } from "@chakra-ui/react";
 import { type Track as TrackType } from "../services/spotify";
 
 interface TrackProps {
@@ -7,12 +6,14 @@ interface TrackProps {
 
 const Track = ({ track }: TrackProps): JSX.Element => {
   return (
-    <>
-      <Text>
-        {track.name} -&nbsp;
-        {track.artists.map((ar) => ar.name).join(". ")}
-      </Text>
-    </>
+    <iframe
+      style={{ borderRadius: "15px" }}
+      src={`https://open.spotify.com/embed/track/${track.id}?utm_source=generator&theme=0`}
+      width="100%"
+      height="152"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"
+    ></iframe>
   );
 };
 

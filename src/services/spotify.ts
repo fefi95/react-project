@@ -15,10 +15,19 @@ export interface Artists {
   id: string;
   name: string;
 }
+
+export interface Album {
+  id: string;
+  name: string;
+  images: string[];
+}
+
 export interface Track {
   id: string;
   name: string;
   artists: Artists[];
+  preview_url: string;
+  href: string;
 }
 
 export interface TopResponse {

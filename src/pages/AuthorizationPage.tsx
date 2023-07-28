@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Link, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Link } from "@chakra-ui/react";
 import { useContext, useEffect } from "react";
 import {
   type User,
@@ -43,12 +43,10 @@ const AuthorizationPage = (): JSX.Element => {
   });
 
   return (
-    <VStack direction="row">
-      <Flex alignItems="center" justifyContent="center">
-        <Heading as="h1" py="5">
-          Log in to Spotify
-        </Heading>
-      </Flex>
+    <>
+      <Heading as="h1" py="5">
+        Log in to Spotify
+      </Heading>
       <Flex alignItems="center" justifyContent="center">
         <Box w="25vw" h="50vh" p="5" bg="coral">
           {user1 != null ? (
@@ -74,7 +72,7 @@ const AuthorizationPage = (): JSX.Element => {
       ) : (
         <></>
       )}
-    </VStack>
+    </>
   );
 };
 
