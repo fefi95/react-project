@@ -1,7 +1,7 @@
 import AuthorizationPage from "./pages/AuthorizationPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MatchingTracks from "./pages/MatchingTracksPage.tsx";
-import { User1Context, User2Context } from "./contexts/User.ts";
+import { UsersContext } from "./contexts/User.ts";
 import { User } from "./services/spotify.ts";
 import { useState } from "react";
 import Layout from "./Layout.tsx";
@@ -34,16 +34,14 @@ const App = (): JSX.Element => {
     return u1 !== null ? JSON.parse(u1) : null;
   };
 
-  const user1State = useState<User | null>(getUser(USER1) || null);
-  const user2State = useState<User | null>(getUser(USER2) || null);
+  const user1S = useState<User | null>(getUser(USER1) || null);
+  const user2S = useState<User | null>(getUser(USER2) || null);
 
   return (
     <>
-      <User1Context.Provider value={user1State}>
-        <User2Context.Provider value={user2State}>
-          <RouterProvider router={router} />
-        </User2Context.Provider>
-      </User1Context.Provider>
+      <UsersContext.Provider value={{ user1S, user2S }}>
+        <RouterProvider router={router} />
+      </UsersContext.Provider>
     </>
   );
 };

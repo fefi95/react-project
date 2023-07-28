@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Link } from "@chakra-ui/react";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import {
   type User,
   authorizationLink,
@@ -7,14 +7,16 @@ import {
   getTokenFromURL,
 } from "../services/spotify";
 import Profile from "../components/Profile";
-import { User1Context, User2Context } from "../contexts/User";
+import { useAuthContext } from "../contexts/User";
 
 const AuthorizationPage = (): JSX.Element => {
   const USER1 = "USER1";
   const USER2 = "USER2";
 
-  const [user1, setUser1] = useContext(User1Context);
-  const [user2, setUser2] = useContext(User2Context);
+  const {
+    user1S: [user1, setUser1],
+    user2S: [user2, setUser2],
+  } = useAuthContext();
 
   const setUser = async (
     token: string,
@@ -52,7 +54,7 @@ const AuthorizationPage = (): JSX.Element => {
           {user1 != null ? (
             <Profile user={user1}></Profile>
           ) : (
-            <Link href={authorizationLink()} target="popup">
+            <Link href={authorizationLink()}>
               <Button>Grant permissions for user 1</Button>
             </Link>
           )}
@@ -61,7 +63,7 @@ const AuthorizationPage = (): JSX.Element => {
           {user2 != null ? (
             <Profile user={user2}></Profile>
           ) : (
-            <Link href={authorizationLink()} target="popup">
+            <Link href={authorizationLink()}>
               <Button>Grant permissions for user 2</Button>
             </Link>
           )}

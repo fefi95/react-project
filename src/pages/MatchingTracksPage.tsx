@@ -3,8 +3,8 @@ import {
   type Track as TrackType,
   type User,
 } from "../services/spotify";
-import { useEffect, useState, useContext } from "react";
-import { User1Context, User2Context } from "../contexts/User";
+import { useEffect, useState } from "react";
+import { useAuthContext } from "../contexts/User";
 import Track from "../components/Track";
 import { useNavigate } from "react-router-dom";
 import {
@@ -33,8 +33,10 @@ const fetchTopTracks = async (
 };
 
 const MatchingTracks = (): JSX.Element => {
-  const [user1] = useContext(User1Context);
-  const [user2] = useContext(User2Context);
+  const {
+    user1S: [user1],
+    user2S: [user2],
+  } = useAuthContext();
 
   const navigate = useNavigate();
 

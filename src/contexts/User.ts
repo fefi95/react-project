@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import { type User } from "../services/spotify";
 
 export type UserState = [
@@ -6,12 +6,14 @@ export type UserState = [
   React.Dispatch<React.SetStateAction<User | null>>,
 ];
 
-export const User1Context: React.Context<UserState> = createContext([
-  null,
-  () => {},
-]);
+const unauthenticatedUsers = {
+  user1S: [null, () => {}],
+  user2S: [null, () => {}],
+};
 
-export const User2Context: React.Context<UserState> = createContext([
-  null,
-  () => {},
-]);
+export const UsersContext: React.Context<{
+  user1S: UserState;
+  user2S: UserState;
+}> = createContext(unauthenticatedUsers);
+
+export const useAuthContext = () => useContext(UsersContext);

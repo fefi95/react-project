@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import AuthorizationPage from "./AuthorizationPage";
 import { vi } from "vitest";
 import * as spotify from "../services/spotify";
-import { User1Context, User2Context, type UserState } from "../contexts/User";
+import { UsersContext, type UserState } from "../contexts/User";
 
 describe("AuthorizationPage", () => {
   const user1 = {
@@ -22,13 +22,13 @@ describe("AuthorizationPage", () => {
 
   const customRender = (
     ui: React.ReactElement,
-    value1: UserState = [null, () => null],
-    value2: UserState = [null, () => null],
+    user1S: UserState = [null, () => null],
+    user2S: UserState = [null, () => null],
   ): RenderResult => {
     return render(
-      <User1Context.Provider value={value1}>
-        <User2Context.Provider value={value2}>{ui}</User2Context.Provider>
-      </User1Context.Provider>,
+      <UsersContext.Provider value={{ user1S, user2S }}>
+        {ui}
+      </UsersContext.Provider>,
     );
   };
 
