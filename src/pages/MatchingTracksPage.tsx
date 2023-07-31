@@ -3,7 +3,7 @@ import {
   type Track as TrackType,
   type User,
 } from "../services/spotify";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuthContext } from "../contexts/User";
 import Track from "../components/Track";
 import { useNavigate } from "react-router-dom";
@@ -43,11 +43,6 @@ const MatchingTracks = (): JSX.Element => {
   const [user1TopTracks, setUser1TopTracks] = useState<TrackType[]>([]);
   const [user2TopTracks, setUser2TopTracks] = useState<TrackType[]>([]);
 
-  const [matchingTracks, setMatchingTracks] = useState<[TrackType[], number]>([
-    [],
-    0,
-  ]);
-
   useEffect(() => {
     if (user1 == null || user2 == null) {
       navigate("/");
@@ -56,11 +51,11 @@ const MatchingTracks = (): JSX.Element => {
 
     fetchTopTracks(user1, setUser1TopTracks);
     fetchTopTracks(user2, setUser2TopTracks);
-  }, [user1, user2]);
+  }, []);
 
-  useEffect(() => {
+  const [matchingTracks, stats] = useMemo(() => {
     const mt = getMatchingTracks(user1TopTracks, user2TopTracks);
-    setMatchingTracks([mt, (mt.length / user1TopTracks.length) * 100]);
+    return [mt, (mt.length / user1TopTracks.length) * 100];
   }, [user1TopTracks, user2TopTracks]);
 
   return (
@@ -68,17 +63,12 @@ const MatchingTracks = (): JSX.Element => {
       <Heading as="h1">
         Compatibility between {user1?.username} and {user2?.username}
       </Heading>
-      <CircularProgress
-        p="5"
-        value={matchingTracks[1]}
-        size="120px"
-        thickness="15px"
-      >
-        <CircularProgressLabel>{matchingTracks[1]}%</CircularProgressLabel>
+      <CircularProgress p="5" value={stats} size="120px" thickness="15px">
+        <CircularProgressLabel>{stats}%</CircularProgressLabel>
       </CircularProgress>
       <Heading as="h2">Your top songs!</Heading>
       <UnorderedList styleType="none" m="0" spacing="4">
-        {matchingTracks[0].slice(0, 5).map((t, index) => (
+        {matchingTracks.slice(0, 5).map((t, index) => (
           <ListItem key={index} width="xl">
             <Track track={t}></Track>
           </ListItem>
