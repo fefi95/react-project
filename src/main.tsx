@@ -1,13 +1,17 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import theme from "./theme";
 import { ChakraProvider } from "@chakra-ui/react";
+import LoadingSkeleton from "./components/LoadingSkeleton";
+
+const App = React.lazy(() => import("./App"));
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-      <App />
+      <Suspense fallback={<LoadingSkeleton />}>
+        <App />
+      </Suspense>
     </ChakraProvider>
   </React.StrictMode>,
 );
