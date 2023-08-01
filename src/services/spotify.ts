@@ -92,7 +92,7 @@ export const getProfile = async (token: string): Promise<User> => {
 export const getTopTracks = async (token: string): Promise<TopResponse> => {
   return (await fetchWebApi(
     token,
-    "v1/me/top/tracks?time_range=short_term&limit=10",
+    "v1/me/top/tracks?time_range=long_term&limit=20",
     "GET",
   )) as TopResponse;
 };

@@ -3,11 +3,12 @@ import {
   type Track as TrackType,
   type User,
 } from "../services/spotify";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuthContext } from "../contexts/User";
 import Track from "../components/Track";
 import { useNavigate } from "react-router-dom";
 import {
+  Button,
   CircularProgress,
   CircularProgressLabel,
   Heading,
@@ -42,6 +43,7 @@ const MatchingTracks = (): JSX.Element => {
 
   const [user1TopTracks, setUser1TopTracks] = useState<TrackType[]>([]);
   const [user2TopTracks, setUser2TopTracks] = useState<TrackType[]>([]);
+  const ulRef = useRef<HTMLUListElement | null>(null);
 
   useEffect(() => {
     if (user1 == null || user2 == null) {
@@ -58,16 +60,35 @@ const MatchingTracks = (): JSX.Element => {
     return [mt, (mt.length / user1TopTracks.length) * 100];
   }, [user1TopTracks, user2TopTracks]);
 
+  const showUnorderedList = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (ulRef?.current) {
+        ulRef.current.hidden = false;
+        e.target.hidden = true;
+      }
+    },
+    [],
+  );
+
   return (
     <>
       <Heading as="h1">
         Compatibility between {user1?.username} and {user2?.username}
       </Heading>
-      <CircularProgress p="5" value={stats} size="120px" thickness="15px">
-        <CircularProgressLabel>{stats}%</CircularProgressLabel>
+      <CircularProgress
+        p="5"
+        isIndeterminate={Number.isNaN(stats)}
+        value={stats}
+        size="120px"
+        thickness="15px"
+      >
+        <CircularProgressLabel>
+          {Number.isNaN(stats) ? "" : `${stats}%`}
+        </CircularProgressLabel>
       </CircularProgress>
-      <Heading as="h2">Your top songs!</Heading>
-      <UnorderedList styleType="none" m="0" spacing="4">
+
+      <Button onClick={showUnorderedList}>See the top matching tacks!</Button>
+      <UnorderedList styleType="none" m="0" spacing="4" ref={ulRef} hidden>
         {matchingTracks.slice(0, 5).map((t, index) => (
           <ListItem key={index} width="xl">
             <Track track={t}></Track>
