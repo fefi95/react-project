@@ -3,11 +3,12 @@ import {
   type Track as TrackType,
   type User,
 } from "../services/spotify";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuthContext } from "../contexts/User";
 import Track from "../components/Track";
 import { useNavigate } from "react-router-dom";
 import {
+  Button,
   CircularProgress,
   CircularProgressLabel,
   Heading,
@@ -42,11 +43,7 @@ const MatchingTracks = (): JSX.Element => {
 
   const [user1TopTracks, setUser1TopTracks] = useState<TrackType[]>([]);
   const [user2TopTracks, setUser2TopTracks] = useState<TrackType[]>([]);
-
-  const [matchingTracks, setMatchingTracks] = useState<[TrackType[], number]>([
-    [],
-    0,
-  ]);
+  const ulRef = useRef<HTMLUListElement | null>(null);
 
   useEffect(() => {
     if (user1 == null || user2 == null) {
@@ -56,12 +53,22 @@ const MatchingTracks = (): JSX.Element => {
 
     fetchTopTracks(user1, setUser1TopTracks);
     fetchTopTracks(user2, setUser2TopTracks);
-  }, [user1, user2]);
+  }, []);
 
-  useEffect(() => {
+  const [matchingTracks, stats] = useMemo(() => {
     const mt = getMatchingTracks(user1TopTracks, user2TopTracks);
-    setMatchingTracks([mt, (mt.length / user1TopTracks.length) * 100]);
+    return [mt, (mt.length / user1TopTracks.length) * 100];
   }, [user1TopTracks, user2TopTracks]);
+
+  const showUnorderedList = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (ulRef?.current) {
+        ulRef.current.hidden = false;
+        e.target.hidden = true;
+      }
+    },
+    [],
+  );
 
   return (
     <>
@@ -70,15 +77,19 @@ const MatchingTracks = (): JSX.Element => {
       </Heading>
       <CircularProgress
         p="5"
-        value={matchingTracks[1]}
+        isIndeterminate={Number.isNaN(stats)}
+        value={stats}
         size="120px"
         thickness="15px"
       >
-        <CircularProgressLabel>{matchingTracks[1]}%</CircularProgressLabel>
+        <CircularProgressLabel>
+          {Number.isNaN(stats) ? "" : `${stats}%`}
+        </CircularProgressLabel>
       </CircularProgress>
-      <Heading as="h2">Your top songs!</Heading>
-      <UnorderedList styleType="none" m="0" spacing="4">
-        {matchingTracks[0].slice(0, 5).map((t, index) => (
+
+      <Button onClick={showUnorderedList}>See the top matching tacks!</Button>
+      <UnorderedList styleType="none" m="0" spacing="4" ref={ulRef} hidden>
+        {matchingTracks.slice(0, 5).map((t, index) => (
           <ListItem key={index} width="xl">
             <Track track={t}></Track>
           </ListItem>
