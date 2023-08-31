@@ -11,31 +11,6 @@ export interface AuthenticationToken {
   token_type: string;
 }
 
-export interface Artists {
-  id: string;
-  name: string;
-}
-
-export interface Album {
-  id: string;
-  name: string;
-  images: string[];
-}
-
-export interface Track {
-  id: string;
-  name: string;
-  artists: Artists[];
-  preview_url: string;
-  href: string;
-}
-
-export interface TopResponse {
-  items: Track[];
-  next: string;
-  previous: string;
-}
-
 export const authorizationLink = (): string => {
   const endpoint = "https://accounts.spotify.com/authorize";
   const clientId = "c885059149324ef1b5d431e6e84c5500";
@@ -60,6 +35,29 @@ export const getTokenFromURL = (query: string): AuthenticationToken | null => {
           return initial;
         }, {}) as AuthenticationToken)
     : null;
+};
+
+export const authorization = async (
+  clientId: string,
+  clientSecret: string,
+): Promise<string> => {
+  const formData = new FormData();
+  formData.append("grant_type", "client_credentials");
+
+  const authOptions = {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: "Basic " + btoa(clientId + ":" + clientSecret),
+    },
+    method: "POST",
+    body: "grant_type=client_credentials",
+  };
+
+  const res = await fetch(
+    "https://accounts.spotify.com/api/token",
+    authOptions,
+  );
+  return (await res.json()).access_token;
 };
 
 const fetchWebApi = async (
@@ -89,10 +87,13 @@ export const getProfile = async (token: string): Promise<User> => {
   };
 };
 
-export const getTopTracks = async (token: string): Promise<TopResponse> => {
-  return (await fetchWebApi(
-    token,
-    "v1/me/top/tracks?time_range=short_term&limit=10",
-    "GET",
-  )) as TopResponse;
+export const getTopTracks = async (token: string): any => {
+  // Endpoint reference : https://developer.spotify.com/documentation/web-api/reference/get-users-top-artists-and-tracks
+  return (
+    await fetchWebApi(
+      token,
+      "v1/me/top/tracks?time_range=short_term&limit=5",
+      "GET",
+    )
+  ).items;
 };
