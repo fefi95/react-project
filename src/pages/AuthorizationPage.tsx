@@ -42,7 +42,7 @@ const AuthorizationPage = (): JSX.Element => {
     }
 
     window.location.hash = "";
-  });
+  }, []);
 
   return (
     <>
