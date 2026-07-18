@@ -4,7 +4,7 @@ This a pet project to learn React. Only used in `dev` mode.
 
 ## What's the app about
 
-Determine how similar are your taste in music comparing with another user using [Spotify][spotify] accounts
+Determine how similar are your taste in music comparing with another user using [Spotify][spotify] accounts.
 
 ### Features
 
