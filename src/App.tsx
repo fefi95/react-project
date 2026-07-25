@@ -1,11 +1,4 @@
 import AuthorizationPage from "./pages/AuthorizationPage";
-<<<<<<< HEAD
-
-const App = (): JSX.Element => {
-  return (
-    <>
-      <AuthorizationPage></AuthorizationPage>
-=======
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MatchingTracks from "./pages/MatchingTracksPage.tsx";
 import { UsersContext } from "./contexts/User.ts";
@@ -49,7 +42,6 @@ const App = (): JSX.Element => {
       <UsersContext.Provider value={{ user1S, user2S }}>
         <RouterProvider router={router} />
       </UsersContext.Provider>
->>>>>>> origin/TASK-02-get-matching-tracks
     </>
   );
 };
