@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 import { render, screen, waitFor } from "@testing-library/react";
+=======
+import { RenderResult, render, screen, waitFor } from "@testing-library/react";
+>>>>>>> origin/TASK-02-get-matching-tracks
 import "@testing-library/jest-dom";
 import AuthorizationPage from "./AuthorizationPage";
 import { vi } from "vitest";
 import * as spotify from "../services/spotify";
+<<<<<<< HEAD
+=======
+import { UsersContext, type UserState } from "../contexts/User";
+>>>>>>> origin/TASK-02-get-matching-tracks
 
 describe("AuthorizationPage", () => {
   const user1 = {
@@ -19,6 +27,21 @@ describe("AuthorizationPage", () => {
     username: "lhale",
   };
 
+<<<<<<< HEAD
+=======
+  const customRender = (
+    ui: React.ReactElement,
+    user1S: UserState = [null, () => null],
+    user2S: UserState = [null, () => null],
+  ): RenderResult => {
+    return render(
+      <UsersContext.Provider value={{ user1S, user2S }}>
+        {ui}
+      </UsersContext.Provider>,
+    );
+  };
+
+>>>>>>> origin/TASK-02-get-matching-tracks
   describe("when the users are not authenticated", () => {
     it("loads the buttons to get the user's authentication", () => {
       render(<AuthorizationPage></AuthorizationPage>);
@@ -33,11 +56,16 @@ describe("AuthorizationPage", () => {
 
   describe("when one of the users is authenticated", () => {
     it("shows one of the profiles and one authorization button", async () => {
+<<<<<<< HEAD
       vi.spyOn(Storage.prototype, "getItem").mockImplementation((item) =>
         item === "USER1" ? JSON.stringify(user1) : null,
       );
       vi.spyOn(spotify, "getProfile").mockResolvedValue(user1);
       render(<AuthorizationPage></AuthorizationPage>);
+=======
+      vi.spyOn(spotify, "getProfile").mockResolvedValue(user1);
+      customRender(<AuthorizationPage></AuthorizationPage>, [user1, () => {}]);
+>>>>>>> origin/TASK-02-get-matching-tracks
 
       await waitFor(() => {
         expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
@@ -53,6 +81,7 @@ describe("AuthorizationPage", () => {
 
   describe("when both users are authenticated", () => {
     it("shows both users", async () => {
+<<<<<<< HEAD
       const localStorageSpy = vi
         .spyOn(Storage.prototype, "getItem")
         .mockImplementation((item) =>
@@ -63,6 +92,16 @@ describe("AuthorizationPage", () => {
 
       await waitFor(() => {
         expect(localStorageSpy).toHaveBeenCalled();
+=======
+      vi.spyOn(spotify, "getProfile").mockResolvedValue(user1);
+      customRender(
+        <AuthorizationPage></AuthorizationPage>,
+        [user1, () => {}],
+        [user2, () => {}],
+      );
+
+      await waitFor(() => {
+>>>>>>> origin/TASK-02-get-matching-tracks
         expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
           "Log in to Spotify",
         );
