@@ -131,4 +131,75 @@ test.describe("Authorization Page", () => {
     await page.getByRole("link", { name: "Check matching tracks" }).click();
     await expect(page).toHaveURL(/\/matching_tracks/);
   });
+
+  test.describe("OAuth callback — token in URL hash", () => {
+    test("sets user 1 from the hash token when no users are logged in", async ({
+      page,
+    }) => {
+      // Mock the Spotify profile API so no real network call is made
+      await page.route("**/v1/me/**", async (route) => {
+        await route.fulfill({
+          json: { id: mockUser1.id, display_name: mockUser1.username },
+        });
+      });
+
+      // Simulate landing back from Spotify with a token in the hash
+      await page.goto(
+        `/#access_token=mock_token_1&token_type=Bearer&expires_in=3600`,
+      );
+
+      await expect(
+        page.getByRole("heading", { name: mockUser1.username }),
+      ).toBeVisible();
+      // User 2 login button should still be shown
+      await expect(
+        page.getByRole("button", { name: "Grant permissions for user 2" }),
+      ).toBeVisible();
+    });
+
+    test("sets user 2 from the hash token when user 1 is already logged in", async ({
+      page,
+    }) => {
+      await page.addInitScript((user) => {
+        localStorage.setItem("USER1", JSON.stringify(user));
+      }, mockUser1);
+
+      await page.route("**/v1/me/**", async (route) => {
+        await route.fulfill({
+          json: { id: mockUser2.id, display_name: mockUser2.username },
+        });
+      });
+
+      await page.goto(
+        `/#access_token=mock_token_2&token_type=Bearer&expires_in=3600`,
+      );
+
+      await expect(
+        page.getByRole("heading", { name: mockUser1.username }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole("heading", { name: mockUser2.username }),
+      ).toBeVisible();
+    });
+
+    test("clears the hash from the URL after processing the token", async ({
+      page,
+    }) => {
+      await page.route("**/v1/me/**", async (route) => {
+        await route.fulfill({
+          json: { id: mockUser1.id, display_name: mockUser1.username },
+        });
+      });
+
+      await page.goto(
+        `/#access_token=mock_token_1&token_type=Bearer&expires_in=3600`,
+      );
+
+      await expect(
+        page.getByRole("heading", { name: mockUser1.username }),
+      ).toBeVisible();
+      expect(page.url()).not.toContain("access_token");
+    });
+  });
 });
+

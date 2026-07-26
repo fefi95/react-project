@@ -9,3 +9,18 @@ expect.extend(matchers);
 afterEach(() => {
   cleanup();
 });
+
+// jsdom does not implement window.matchMedia; mock it so Chakra UI components work
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  value: (query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: () => {},
+    removeListener: () => {},
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    dispatchEvent: () => false,
+  }),
+});
