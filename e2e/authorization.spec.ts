@@ -20,10 +20,10 @@ test.describe("Authorization Page", () => {
   }) => {
     await page.goto("/");
     await expect(
-      page.getByRole("button", { name: "Grant permissions for user 1" }),
+      page.getByRole("link", { name: "Grant permissions for user 1" }),
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Grant permissions for user 2" }),
+      page.getByRole("link", { name: "Grant permissions for user 2" }),
     ).toBeVisible();
   });
 
@@ -49,7 +49,7 @@ test.describe("Authorization Page", () => {
       page.getByRole("heading", { name: mockUser1.username }),
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Grant permissions for user 2" }),
+      page.getByRole("link", { name: "Grant permissions for user 2" }),
     ).toBeVisible();
   });
 
@@ -110,8 +110,8 @@ test.describe("Authorization Page", () => {
     page,
   }) => {
     await page.goto("/");
-    const user1Link = page.getByRole("link").filter({
-      has: page.getByRole("button", { name: "Grant permissions for user 1" }),
+    const user1Link = page.getByRole("link", {
+      name: "Grant permissions for user 1",
     });
     const href = await user1Link.getAttribute("href");
     expect(href).not.toBeNull();
@@ -162,7 +162,7 @@ test.describe("Authorization Page", () => {
       ).toBeVisible();
       // User 2 login button should still be shown
       await expect(
-        page.getByRole("button", { name: "Grant permissions for user 2" }),
+        page.getByRole("link", { name: "Grant permissions for user 2" }),
       ).toBeVisible();
     });
 
