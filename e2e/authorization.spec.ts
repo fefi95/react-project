@@ -106,6 +106,7 @@ test.describe("Authorization Page", () => {
       has: page.getByRole("button", { name: "Grant permissions for user 1" }),
     });
     const href = await user1Link.getAttribute("href");
+    expect(href).not.toBeNull();
     expect(href).toContain("accounts.spotify.com/authorize");
     expect(href).toContain("response_type=token");
   });

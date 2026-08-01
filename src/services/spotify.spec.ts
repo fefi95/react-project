@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   getTokenFromURL,
   authorizationLink,
@@ -61,6 +61,9 @@ describe("getProfile", () => {
     vi.stubGlobal("fetch", vi.fn());
   });
 
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
   it("returns a User mapped from the Spotify API response", async () => {
     const mockApiResponse = {
       id: "spotify_user_id",
@@ -101,6 +104,9 @@ describe("getTopTracks", () => {
     vi.stubGlobal("fetch", vi.fn());
   });
 
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
   it("calls the Spotify top tracks endpoint", async () => {
     const mockResponse = { items: [], next: null, previous: null };
     vi.mocked(fetch).mockResolvedValue({

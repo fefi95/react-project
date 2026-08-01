@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { vi } from "vitest";
 import ErrorBoundary from "./ErrorBoundary";
 
 // Suppress the console.error output from the expected thrown error

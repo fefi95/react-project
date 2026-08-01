@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page, type Route } from "@playwright/test";
 import {
   mockUser1,
   mockUser2,
@@ -7,7 +7,7 @@ import {
   mockTracks,
 } from "./fixtures";
 
-const setupUsers = async (page: any) => {
+const setupUsers = async (page: Page) => {
   await page.addInitScript(
     ({ u1, u2 }: { u1: typeof mockUser1; u2: typeof mockUser2 }) => {
       localStorage.setItem("USER1", JSON.stringify(u1));
@@ -18,11 +18,11 @@ const setupUsers = async (page: any) => {
 };
 
 const mockTopTracks = async (
-  page: any,
+  page: Page,
   token1Tracks: typeof mockUser1Tracks,
   token2Tracks: typeof mockUser2Tracks,
 ) => {
-  await page.route("**/v1/me/top/tracks**", async (route: any) => {
+  await page.route("**/v1/me/top/tracks**", async (route: Route) => {
     const request = route.request();
     const authHeader: string = request.headers()["authorization"] ?? "";
     const token = authHeader.replace("Bearer ", "");
@@ -95,7 +95,7 @@ test.describe("Matching Tracks Page", () => {
     await setupUsers(page);
 
     // Delay response to observe loading state
-    await page.route("**/v1/me/top/tracks**", async (route: any) => {
+    await page.route("**/v1/me/top/tracks**", async (route: Route) => {
       await new Promise((r) => setTimeout(r, 2000));
       await route.fulfill({
         json: { items: [], next: null, previous: null },
@@ -176,7 +176,7 @@ test.describe("Matching Tracks Page", () => {
       href: `https://api.spotify.com/v1/tracks/shared_track_${n}`,
     }));
 
-    await page.route("**/v1/me/top/tracks**", async (route: any) => {
+    await page.route("**/v1/me/top/tracks**", async (route: Route) => {
       await route.fulfill({
         json: { items: manyMatchingTracks, next: null, previous: null },
       });
@@ -201,7 +201,7 @@ test.describe("Matching Tracks Page", () => {
     const user1Only = mockTracks.map((t) => ({ ...t, id: `u1_${t.id}` }));
     const user2Only = mockTracks.map((t) => ({ ...t, id: `u2_${t.id}` }));
 
-    await page.route("**/v1/me/top/tracks**", async (route: any) => {
+    await page.route("**/v1/me/top/tracks**", async (route: Route) => {
       const authHeader: string =
         route.request().headers()["authorization"] ?? "";
       const token = authHeader.replace("Bearer ", "");
