@@ -1,4 +1,13 @@
-import { Box, Button, Flex, Heading, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Grid,
+  GridItem,
+  Heading,
+  Link,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect } from "react";
 import {
   type User,
@@ -45,36 +54,94 @@ const AuthorizationPage = (): JSX.Element => {
   }, []);
 
   return (
-    <>
-      <Heading as="h1" py="5">
+    <Stack spacing={{ base: 5, md: 7 }}>
+      <Heading as="h1" size={{ base: "lg", md: "xl" }}>
         Log in to Spotify
       </Heading>
-      <Flex alignItems="center" justifyContent="center">
-        <Box w="25vw" h="50vh" p="5" bg="coral">
+
+      <Text color="ink.700" maxW="2xl">
+        Connect two accounts to compare their top tracks and reveal your shared
+        music DNA.
+      </Text>
+
+      <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap="5">
+        <GridItem>
+          <Box
+            p={{ base: 5, md: 6 }}
+            borderRadius="xl"
+            bg="whiteAlpha.850"
+            border="2px solid"
+            borderColor="brand.200"
+            boxShadow="card"
+            minH="320px"
+          >
+            <Text
+              fontSize="xs"
+              fontWeight="700"
+              letterSpacing="0.08em"
+              color="ink.600"
+              textTransform="uppercase"
+              mb="3"
+            >
+              Listener 1
+            </Text>
           {user1 != null ? (
             <Profile user={user1}></Profile>
           ) : (
             <Link href={authorizationLink()}>
-              <Button>Grant permissions for user 1</Button>
+              <Button size="lg" w="full">
+                Grant permissions for user 1
+              </Button>
             </Link>
           )}
-        </Box>
-        <Box w="25vw" h="50vh" p="5" bg="purple">
+          </Box>
+        </GridItem>
+
+        <GridItem>
+          <Box
+            p={{ base: 5, md: 6 }}
+            borderRadius="xl"
+            bg="whiteAlpha.850"
+            border="2px solid"
+            borderColor="accent.200"
+            boxShadow="card"
+            minH="320px"
+          >
+            <Text
+              fontSize="xs"
+              fontWeight="700"
+              letterSpacing="0.08em"
+              color="ink.600"
+              textTransform="uppercase"
+              mb="3"
+            >
+              Listener 2
+            </Text>
           {user2 != null ? (
             <Profile user={user2}></Profile>
           ) : (
             <Link href={authorizationLink()}>
-              <Button>Grant permissions for user 2</Button>
+              <Button size="lg" w="full">
+                Grant permissions for user 2
+              </Button>
             </Link>
           )}
-        </Box>
-      </Flex>
+          </Box>
+        </GridItem>
+      </Grid>
+
       {user1 !== null && user2 !== null ? (
-        <Link href="/matching_tracks">Check matching tracks</Link>
+        <Box>
+          <Link href="/matching_tracks">
+            <Button size="lg" px="8" bg="accent.500" _hover={{ bg: "accent.600" }}>
+              Check matching tracks
+            </Button>
+          </Link>
+        </Box>
       ) : (
         <></>
       )}
-    </>
+    </Stack>
   );
 };
 
