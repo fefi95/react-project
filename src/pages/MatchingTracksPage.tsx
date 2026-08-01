@@ -8,11 +8,15 @@ import { useAuthContext } from "../contexts/User";
 import Track from "../components/Track";
 import { useNavigate } from "react-router-dom";
 import {
+  Box,
   Button,
   CircularProgress,
   CircularProgressLabel,
+  HStack,
   Heading,
   ListItem,
+  Stack,
+  Text,
   UnorderedList,
 } from "@chakra-ui/react";
 
@@ -43,6 +47,7 @@ const MatchingTracks = (): JSX.Element => {
 
   const [user1TopTracks, setUser1TopTracks] = useState<TrackType[]>([]);
   const [user2TopTracks, setUser2TopTracks] = useState<TrackType[]>([]);
+  const [showMatches, setShowMatches] = useState(false);
   const ulRef = useRef<HTMLUListElement | null>(null);
 
   useEffect(() => {
@@ -60,42 +65,87 @@ const MatchingTracks = (): JSX.Element => {
     return [mt, (mt.length / user1TopTracks.length) * 100];
   }, [user1TopTracks, user2TopTracks]);
 
-  const showUnorderedList = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (ulRef?.current) {
-        ulRef.current.hidden = false;
-        e.target.hidden = true;
-      }
-    },
-    [],
-  );
+  const safeStats = Number.isNaN(stats) ? 0 : Math.round(stats);
+
+  const showUnorderedList = useCallback(() => {
+    setShowMatches(true);
+    if (ulRef?.current) {
+      ulRef.current.hidden = false;
+    }
+  }, []);
 
   return (
-    <>
-      <Heading as="h1">
+    <Stack spacing="6">
+      <Heading as="h1" size={{ base: "lg", md: "xl" }}>
         Compatibility between {user1?.username} and {user2?.username}
       </Heading>
-      <CircularProgress
-        p="5"
-        isIndeterminate={Number.isNaN(stats)}
-        value={stats}
-        size="120px"
-        thickness="15px"
-      >
-        <CircularProgressLabel>
-          {Number.isNaN(stats) ? "" : `${stats}%`}
-        </CircularProgressLabel>
-      </CircularProgress>
 
-      <Button onClick={showUnorderedList}>See the top matching tacks!</Button>
-      <UnorderedList styleType="none" m="0" spacing="4" ref={ulRef} hidden>
-        {matchingTracks.slice(0, 5).map((t, index) => (
-          <ListItem key={index} width="xl">
-            <Track track={t}></Track>
-          </ListItem>
-        ))}
-      </UnorderedList>
-    </>
+      <Box
+        p={{ base: 5, md: 6 }}
+        borderRadius="xl"
+        bg="rgba(255, 255, 255, 0.85)"
+        border="2px solid"
+        borderColor="brand.200"
+        boxShadow="card"
+      >
+        <HStack spacing="5" align="center" flexWrap="wrap">
+          <CircularProgress
+            p="2"
+            isIndeterminate={Number.isNaN(stats)}
+            value={safeStats}
+            size="132px"
+            thickness="14px"
+            color="accent.500"
+            trackColor="brand.100"
+          >
+            <CircularProgressLabel fontWeight="700">
+              {Number.isNaN(stats) ? "" : `${safeStats}%`}
+            </CircularProgressLabel>
+          </CircularProgress>
+          <Box>
+            <Heading as="h2" size="md">
+              Match score
+            </Heading>
+            <Text mt="2" color="ink.700" maxW="md">
+              Based on each listener&apos;s top Spotify tracks.
+            </Text>
+          </Box>
+        </HStack>
+      </Box>
+
+      <Box
+        p={{ base: 5, md: 6 }}
+        borderRadius="xl"
+        bg="rgba(255, 255, 255, 0.85)"
+        border="2px solid"
+        borderColor="accent.200"
+        boxShadow="card"
+      >
+        <Heading as="h2" size="md" mb="4">
+          Top matching tracks
+        </Heading>
+        <Text color="ink.700" mb="5">
+          Reveal the best overlaps between both listening profiles.
+        </Text>
+
+        <Button onClick={showUnorderedList} hidden={showMatches}>
+          See the top matching tracks!
+        </Button>
+        <UnorderedList
+          styleType="none"
+          m="0"
+          spacing="4"
+          ref={ulRef}
+          hidden={!showMatches}
+        >
+          {matchingTracks.slice(0, 5).map((t) => (
+            <ListItem key={t.id} width="xl">
+              <Track track={t}></Track>
+            </ListItem>
+          ))}
+        </UnorderedList>
+      </Box>
+    </Stack>
   );
 };
 
