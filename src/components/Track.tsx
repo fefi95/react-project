@@ -16,6 +16,7 @@ const Track = ({ track }: TrackProps): JSX.Element => {
       boxShadow="card"
     >
       <iframe
+        title={`${track.name} on Spotify`}
         style={{ borderRadius: "12px" }}
         src={`https://open.spotify.com/embed/track/${track.id}?utm_source=generator&theme=0`}
         width="100%"

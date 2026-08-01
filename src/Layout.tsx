@@ -41,7 +41,13 @@ const Layout = (props: LayoutProps): JSX.Element => {
 
         <ErrorBoundary
           fallback={
-            <Box p="6" borderRadius="lg" bg="red.50" border="1px solid" borderColor="red.200">
+            <Box
+              p="6"
+              borderRadius="lg"
+              bg="red.50"
+              border="1px solid"
+              borderColor="red.200"
+            >
               <Heading size="md" color="red.700">
                 Something failed!
               </Heading>

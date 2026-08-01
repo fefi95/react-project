@@ -27,8 +27,7 @@ const mockTopTracks = async (
     const authHeader: string = request.headers()["authorization"] ?? "";
     const token = authHeader.replace("Bearer ", "");
 
-    const tracks =
-      token === mockUser1.token ? token1Tracks : token2Tracks;
+    const tracks = token === mockUser1.token ? token1Tracks : token2Tracks;
 
     await route.fulfill({
       json: { items: tracks, next: null, previous: null },
@@ -118,7 +117,7 @@ test.describe("Matching Tracks Page", () => {
     await page.goto("/matching_tracks");
 
     await expect(
-      page.getByRole("button", { name: "See the top matching tacks!" }),
+      page.getByRole("button", { name: "See the top matching tracks!" }),
     ).toBeVisible();
   });
 
@@ -142,7 +141,9 @@ test.describe("Matching Tracks Page", () => {
     // Wait for % to confirm tracks loaded
     await expect(page.getByText("75%")).toBeVisible();
 
-    await page.getByRole("button", { name: "See the top matching tacks!" }).click();
+    await page
+      .getByRole("button", { name: "See the top matching tracks!" })
+      .click();
 
     const list = page.getByRole("list");
     await expect(list).toBeVisible();
@@ -156,7 +157,9 @@ test.describe("Matching Tracks Page", () => {
 
     await expect(page.getByText("75%")).toBeVisible();
 
-    const button = page.getByRole("button", { name: "See the top matching tacks!" });
+    const button = page.getByRole("button", {
+      name: "See the top matching tracks!",
+    });
     await button.click();
 
     await expect(button).toBeHidden();
@@ -186,7 +189,9 @@ test.describe("Matching Tracks Page", () => {
 
     await expect(page.getByText("100%")).toBeVisible();
 
-    await page.getByRole("button", { name: "See the top matching tacks!" }).click();
+    await page
+      .getByRole("button", { name: "See the top matching tracks!" })
+      .click();
 
     const list = page.getByRole("list");
     await expect(list).toBeVisible();

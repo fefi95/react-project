@@ -35,7 +35,7 @@ const LoadingSkeleton = () => {
         <Box
           p={{ base: 5, md: 6 }}
           borderRadius="xl"
-          bg="whiteAlpha.850"
+          bg="rgba(255, 255, 255, 0.85)"
           border="2px solid"
           borderColor="brand.200"
           boxShadow="card"
@@ -43,7 +43,11 @@ const LoadingSkeleton = () => {
           <Skeleton height="34px" maxW="260px" borderRadius="md" />
           <SkeletonText mt="4" noOfLines={2} spacing="3" skeletonHeight="3" />
 
-          <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap="5" mt="5">
+          <Grid
+            templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
+            gap="5"
+            mt="5"
+          >
             {[0, 1].map((slot) => (
               <Box
                 key={slot}

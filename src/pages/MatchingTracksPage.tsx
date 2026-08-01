@@ -67,15 +67,12 @@ const MatchingTracks = (): JSX.Element => {
 
   const safeStats = Number.isNaN(stats) ? 0 : Math.round(stats);
 
-  const showUnorderedList = useCallback(
-    () => {
-      setShowMatches(true);
-      if (ulRef?.current) {
-        ulRef.current.hidden = false;
-      }
-    },
-    [],
-  );
+  const showUnorderedList = useCallback(() => {
+    setShowMatches(true);
+    if (ulRef?.current) {
+      ulRef.current.hidden = false;
+    }
+  }, []);
 
   return (
     <Stack spacing="6">
@@ -86,7 +83,7 @@ const MatchingTracks = (): JSX.Element => {
       <Box
         p={{ base: 5, md: 6 }}
         borderRadius="xl"
-        bg="whiteAlpha.850"
+        bg="rgba(255, 255, 255, 0.85)"
         border="2px solid"
         borderColor="brand.200"
         boxShadow="card"
@@ -119,7 +116,7 @@ const MatchingTracks = (): JSX.Element => {
       <Box
         p={{ base: 5, md: 6 }}
         borderRadius="xl"
-        bg="whiteAlpha.850"
+        bg="rgba(255, 255, 255, 0.85)"
         border="2px solid"
         borderColor="accent.200"
         boxShadow="card"
@@ -132,7 +129,7 @@ const MatchingTracks = (): JSX.Element => {
         </Text>
 
         <Button onClick={showUnorderedList} hidden={showMatches}>
-          See the top matching tacks!
+          See the top matching tracks!
         </Button>
         <UnorderedList
           styleType="none"
@@ -141,11 +138,11 @@ const MatchingTracks = (): JSX.Element => {
           ref={ulRef}
           hidden={!showMatches}
         >
-        {matchingTracks.slice(0, 5).map((t, index) => (
-          <ListItem key={index} width="xl">
-            <Track track={t}></Track>
-          </ListItem>
-        ))}
+          {matchingTracks.slice(0, 5).map((t) => (
+            <ListItem key={t.id} width="xl">
+              <Track track={t}></Track>
+            </ListItem>
+          ))}
         </UnorderedList>
       </Box>
     </Stack>

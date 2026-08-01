@@ -39,8 +39,8 @@ describe("AuthorizationPage", () => {
       expect(screen.getByRole("heading")).toHaveTextContent(
         "Log in to Spotify",
       );
-      expect(screen.getByRole("button", { name: /user 1/i })).toBeDefined();
-      expect(screen.getByRole("button", { name: /user 2/i })).toBeDefined();
+      expect(screen.getByRole("link", { name: /user 1/i })).toBeDefined();
+      expect(screen.getByRole("link", { name: /user 2/i })).toBeDefined();
     });
   });
 
@@ -56,7 +56,7 @@ describe("AuthorizationPage", () => {
         expect(
           screen.getByRole("heading", { level: 2, name: user1.username }),
         ).toBeDefined();
-        expect(screen.getByRole("button", { name: /user 2/i })).toBeDefined();
+        expect(screen.getByRole("link", { name: /user 2/i })).toBeDefined();
       });
     });
   });

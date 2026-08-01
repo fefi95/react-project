@@ -45,7 +45,9 @@ test.describe("Authorization Page", () => {
 
     await page.goto("/");
 
-    await expect(page.getByRole("heading", { name: mockUser1.username })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: mockUser1.username }),
+    ).toBeVisible();
     await expect(
       page.getByRole("button", { name: "Grant permissions for user 2" }),
     ).toBeVisible();
@@ -65,7 +67,9 @@ test.describe("Authorization Page", () => {
     ).not.toBeVisible();
   });
 
-  test("shows both profiles when both users are logged in", async ({ page }) => {
+  test("shows both profiles when both users are logged in", async ({
+    page,
+  }) => {
     await page.addInitScript(
       ({ u1, u2 }) => {
         localStorage.setItem("USER1", JSON.stringify(u1));
@@ -76,8 +80,12 @@ test.describe("Authorization Page", () => {
 
     await page.goto("/");
 
-    await expect(page.getByRole("heading", { name: mockUser1.username })).toBeVisible();
-    await expect(page.getByRole("heading", { name: mockUser2.username })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: mockUser1.username }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: mockUser2.username }),
+    ).toBeVisible();
   });
 
   test("shows the matching tracks link when both users are logged in", async ({
@@ -203,4 +211,3 @@ test.describe("Authorization Page", () => {
     });
   });
 });
-

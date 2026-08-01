@@ -4,7 +4,6 @@ import {
   Grid,
   GridItem,
   Heading,
-  Link,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -69,7 +68,7 @@ const AuthorizationPage = (): JSX.Element => {
           <Box
             p={{ base: 5, md: 6 }}
             borderRadius="xl"
-            bg="whiteAlpha.850"
+            bg="rgba(255, 255, 255, 0.85)"
             border="2px solid"
             borderColor="brand.200"
             boxShadow="card"
@@ -85,15 +84,13 @@ const AuthorizationPage = (): JSX.Element => {
             >
               Listener 1
             </Text>
-          {user1 != null ? (
-            <Profile user={user1}></Profile>
-          ) : (
-            <Link href={authorizationLink()}>
-              <Button size="lg" w="full">
+            {user1 != null ? (
+              <Profile user={user1}></Profile>
+            ) : (
+              <Button as="a" href={authorizationLink()} size="lg" w="full">
                 Grant permissions for user 1
               </Button>
-            </Link>
-          )}
+            )}
           </Box>
         </GridItem>
 
@@ -101,7 +98,7 @@ const AuthorizationPage = (): JSX.Element => {
           <Box
             p={{ base: 5, md: 6 }}
             borderRadius="xl"
-            bg="whiteAlpha.850"
+            bg="rgba(255, 255, 255, 0.85)"
             border="2px solid"
             borderColor="accent.200"
             boxShadow="card"
@@ -117,26 +114,29 @@ const AuthorizationPage = (): JSX.Element => {
             >
               Listener 2
             </Text>
-          {user2 != null ? (
-            <Profile user={user2}></Profile>
-          ) : (
-            <Link href={authorizationLink()}>
-              <Button size="lg" w="full">
+            {user2 != null ? (
+              <Profile user={user2}></Profile>
+            ) : (
+              <Button as="a" href={authorizationLink()} size="lg" w="full">
                 Grant permissions for user 2
               </Button>
-            </Link>
-          )}
+            )}
           </Box>
         </GridItem>
       </Grid>
 
       {user1 !== null && user2 !== null ? (
         <Box>
-          <Link href="/matching_tracks">
-            <Button size="lg" px="8" bg="accent.500" _hover={{ bg: "accent.600" }}>
-              Check matching tracks
-            </Button>
-          </Link>
+          <Button
+            as="a"
+            href="/matching_tracks"
+            size="lg"
+            px="8"
+            bg="accent.500"
+            _hover={{ bg: "accent.600" }}
+          >
+            Check matching tracks
+          </Button>
         </Box>
       ) : (
         <></>
