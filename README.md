@@ -1,6 +1,6 @@
 # React training
 
-A pet project to learn React. Only used in `dev` mode.
+A pet project to learn React. Intended for local development and experimentation.
 
 ## What's the app about
 
@@ -8,7 +8,7 @@ Determine how similar your music taste is compared to another user's, using [Spo
 
 ### Features
 
-- Authorise two Spotify users via OAuth (token stored in `localStorage`)
+- Authorise two Spotify users via OAuth (current implementation stores the access token in `localStorage` for development convenience; avoid persisting raw tokens in production)
 - Compare their top tracks and show:
   - Compatibility percentage
   - Up to 5 matching tracks as embedded Spotify players
