@@ -1,39 +1,36 @@
 # React training
 
-This a pet project to learn React. Only used in `dev` mode.
+A pet project to learn React. Intended for local development and experimentation.
 
 ## What's the app about
 
-Determine how similar are your taste in music comparing with another user using [Spotify][spotify] accounts.
+Determine how similar your music taste is compared to another user's, using [Spotify][spotify] accounts.
 
 ### Features
 
-- Compare's a user with another and determines:
-  - Top 5 matched artists
-  - Top 5 matched songs
-  - Top 3 matched genres
+- Authorise two Spotify users via OAuth (current implementation stores the access token in `localStorage` for development convenience; avoid persisting raw tokens in production)
+- Compare their top tracks and show:
+  - Compatibility percentage
+  - Up to 5 matching tracks as embedded Spotify players
 
 ## Getting started
 
 ### Tools
 
-- [react] - JavaScript framework
-- [yarn] - Package manager
+- [react] - UI framework
+- [npm] - Package manager
 - [vite] - Build tool
-- [chakra] - CSS framework
+- [chakra] - Component library
+- [react-router-dom] - Client-side routing
+- [vitest] - Unit / component test runner
+- [playwright] - End-to-end test runner
 
 ### Install
 
-Install `node` and `yarn`. You can use [asdf]:
+Install [Node.js](https://nodejs.org/) (v18+), then install dependencies:
 
 ```bash
-asfd install
-```
-
-Install the project's dependencies:
-
-```bash
-yarn install
+npm install
 ```
 
 ### Run project
@@ -41,16 +38,28 @@ yarn install
 #### Dev
 
 ```bash
-yarn vite
+npm run dev
 ```
 
 ### Run tests
 
-Under construction..
+Unit and component tests:
 
-[asdf]: https://asdf-vm.com/
+```bash
+npm test
+```
+
+End-to-end tests:
+
+```bash
+npm run test:e2e
+```
+
 [chakra]: https://chakra-ui.com/
-[react]: https://es.react.dev/
+[npm]: https://www.npmjs.com/
+[playwright]: https://playwright.dev/
+[react]: https://react.dev/
+[react-router-dom]: https://reactrouter.com/
 [spotify]: https://developer.spotify.com/documentation/web-api
 [vite]: https://vitejs.dev/
-[yarn]: https://classic.yarnpkg.com/
+[vitest]: https://vitest.dev/
