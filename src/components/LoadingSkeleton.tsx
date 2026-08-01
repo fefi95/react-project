@@ -72,4 +72,4 @@ const LoadingSkeleton = () => {
     </Container>
   );
 };
-export default LoadingSkeleton;
+export { LoadingSkeleton };

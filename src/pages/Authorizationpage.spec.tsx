@@ -3,19 +3,21 @@ import "@testing-library/jest-dom";
 import AuthorizationPage from "./AuthorizationPage";
 import { vi } from "vitest";
 import * as spotify from "../services/spotify";
-import { UsersContext, type UserState } from "../contexts/User";
+import {
+  UsersContext,
+  type UserState,
+  type TokenState,
+} from "../contexts/User";
 
 describe("AuthorizationPage", () => {
   const user1 = {
     id: "fake-id-1",
-    token: "fake-token-1",
     photoUrl: "fake-photo-1",
     username: "hwilliams",
   };
 
   const user2 = {
     id: "fake-id-2",
-    token: "fake-token-2",
     photoUrl: "fake-photo-2",
     username: "lhale",
   };
@@ -24,9 +26,11 @@ describe("AuthorizationPage", () => {
     ui: React.ReactElement,
     user1S: UserState = [null, () => null],
     user2S: UserState = [null, () => null],
+    token1S: TokenState = [null, () => null],
+    token2S: TokenState = [null, () => null],
   ): RenderResult => {
     return render(
-      <UsersContext.Provider value={{ user1S, user2S }}>
+      <UsersContext.Provider value={{ user1S, user2S, token1S, token2S }}>
         {ui}
       </UsersContext.Provider>,
     );
@@ -34,7 +38,7 @@ describe("AuthorizationPage", () => {
 
   describe("when the users are not authenticated", () => {
     it("loads the buttons to get the user's authentication", () => {
-      render(<AuthorizationPage></AuthorizationPage>);
+      customRender(<AuthorizationPage></AuthorizationPage>);
 
       expect(screen.getByRole("heading")).toHaveTextContent(
         "Log in to Spotify",

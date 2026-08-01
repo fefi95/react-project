@@ -9,23 +9,23 @@ interface ErrorProps {
   children: React.ReactElement;
 }
 
-class ErrorBoundary extends React.Component<ErrorProps, ErrorState, any> {
+// React error boundaries require class components — no hooks-based alternative exists yet.
+class ErrorBoundary extends React.Component<ErrorProps, ErrorState> {
   constructor(props: ErrorProps) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: any): ErrorState {
+  static getDerivedStateFromError(_error: unknown): ErrorState {
     return { hasError: true };
   }
 
-  componentDidCatch(error: any, info: any): void {
+  componentDidCatch(error: unknown, info: React.ErrorInfo): void {
     console.error(error, info.componentStack);
   }
 
   render(): React.ReactElement {
     if (this.state.hasError) {
-      // You can render any custom fallback UI
       return this.props.fallback;
     }
 
@@ -33,4 +33,4 @@ class ErrorBoundary extends React.Component<ErrorProps, ErrorState, any> {
   }
 }
 
-export default ErrorBoundary;
+export { ErrorBoundary };

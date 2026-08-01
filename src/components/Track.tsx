@@ -28,4 +28,4 @@ const Track = ({ track }: TrackProps): JSX.Element => {
   );
 };
 
-export default Track;
+export { Track };

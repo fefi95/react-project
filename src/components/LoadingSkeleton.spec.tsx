@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import LoadingSkeleton from "./LoadingSkeleton";
+import { LoadingSkeleton } from "./LoadingSkeleton";
 
 describe("LoadingSkeleton", () => {
   it("renders without crashing", () => {

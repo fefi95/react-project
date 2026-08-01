@@ -1,11 +1,7 @@
-import {
-  getTopTracks,
-  type Track as TrackType,
-  type User,
-} from "../services/spotify";
+import { getTopTracks, type Track as TrackType } from "../services/spotify";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuthContext } from "../contexts/User";
-import Track from "../components/Track";
+import { Track } from "../components/Track";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -30,10 +26,10 @@ const getMatchingTracks = (
 };
 
 const fetchTopTracks = async (
-  user: User,
-  setTopTrack: React.Dispatch<React.SetStateAction<any[]>>,
+  token: string,
+  setTopTrack: React.Dispatch<React.SetStateAction<TrackType[]>>,
 ): Promise<void> => {
-  const topTracks = await getTopTracks(user.token);
+  const topTracks = await getTopTracks(token);
   setTopTrack(topTracks.items);
 };
 
@@ -41,6 +37,8 @@ const MatchingTracks = (): JSX.Element => {
   const {
     user1S: [user1],
     user2S: [user2],
+    token1S: [token1],
+    token2S: [token2],
   } = useAuthContext();
 
   const navigate = useNavigate();
@@ -51,13 +49,13 @@ const MatchingTracks = (): JSX.Element => {
   const ulRef = useRef<HTMLUListElement | null>(null);
 
   useEffect(() => {
-    if (user1 == null || user2 == null) {
+    if (user1 == null || user2 == null || token1 == null || token2 == null) {
       navigate("/");
       return;
     }
 
-    fetchTopTracks(user1, setUser1TopTracks);
-    fetchTopTracks(user2, setUser2TopTracks);
+    fetchTopTracks(token1, setUser1TopTracks);
+    fetchTopTracks(token2, setUser2TopTracks);
   }, []);
 
   const [matchingTracks, stats] = useMemo(() => {

@@ -38,4 +38,4 @@ const Profile = ({ user }: ProfileProps): JSX.Element => {
   );
 };
 
-export default Profile;
+export { Profile };
