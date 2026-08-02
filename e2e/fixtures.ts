@@ -1,15 +1,16 @@
 import { type User } from "../src/services/spotify";
 
+export const mockUser1Token = "mock_token_1";
+export const mockUser2Token = "mock_token_2";
+
 export const mockUser1: User = {
   id: "user1_id",
-  token: "mock_token_1",
   username: "Alice",
   photoUrl: null,
 };
 
 export const mockUser2: User = {
   id: "user2_id",
-  token: "mock_token_2",
   username: "Bob",
   photoUrl: null,
 };

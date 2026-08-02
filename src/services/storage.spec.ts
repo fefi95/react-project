@@ -1,10 +1,11 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { saveUser, getStoredUser, USER_KEYS } from "./storage";
+import { saveUser, getStoredUser, saveToken, getStoredToken, USER_KEYS, TOKEN_KEYS } from "./storage";
 import { type User } from "./spotify";
 
 describe("storage", () => {
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
   });
 
   const user: User = {
@@ -64,6 +65,24 @@ describe("storage", () => {
 
       const result = getStoredUser(USER_KEYS.USER1);
       expect(result?.photoUrl).toBeNull();
+    });
+  });
+
+  describe("saveToken / getStoredToken", () => {
+    it("stores and retrieves a token from sessionStorage", () => {
+      saveToken(TOKEN_KEYS.TOKEN1, "abc123");
+      expect(getStoredToken(TOKEN_KEYS.TOKEN1)).toBe("abc123");
+    });
+
+    it("returns null when no token is stored", () => {
+      expect(getStoredToken(TOKEN_KEYS.TOKEN1)).toBeNull();
+    });
+
+    it("stores tokens independently under different keys", () => {
+      saveToken(TOKEN_KEYS.TOKEN1, "token-a");
+      saveToken(TOKEN_KEYS.TOKEN2, "token-b");
+      expect(getStoredToken(TOKEN_KEYS.TOKEN1)).toBe("token-a");
+      expect(getStoredToken(TOKEN_KEYS.TOKEN2)).toBe("token-b");
     });
   });
 });

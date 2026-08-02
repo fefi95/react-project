@@ -16,7 +16,7 @@ import {
 } from "../services/spotify";
 import { Profile } from "../components/Profile";
 import { useAuthContext } from "../contexts/User";
-import { saveUser, USER_KEYS } from "../services/storage";
+import { saveUser, saveToken, USER_KEYS, TOKEN_KEYS } from "../services/storage";
 
 const AuthorizationPage = (): JSX.Element => {
   const {
@@ -29,6 +29,7 @@ const AuthorizationPage = (): JSX.Element => {
   const setUser = async (
     token: string,
     userKey: typeof USER_KEYS.USER1 | typeof USER_KEYS.USER2,
+    tokenKey: typeof TOKEN_KEYS.TOKEN1 | typeof TOKEN_KEYS.TOKEN2,
     setUserFunc: React.Dispatch<React.SetStateAction<User | null>>,
     setTokenFunc: React.Dispatch<React.SetStateAction<string | null>>,
   ): Promise<void> => {
@@ -36,6 +37,7 @@ const AuthorizationPage = (): JSX.Element => {
     setUserFunc(profile);
     setTokenFunc(token);
     saveUser(userKey, profile);
+    saveToken(tokenKey, token);
   };
 
   useEffect(() => {
@@ -46,9 +48,9 @@ const AuthorizationPage = (): JSX.Element => {
     const mToken = getTokenFromURL(window.location.hash);
 
     if (mToken && user1 == null && token1 == null) {
-      setUser(mToken.access_token, USER_KEYS.USER1, setUser1, setToken1);
+      setUser(mToken.access_token, USER_KEYS.USER1, TOKEN_KEYS.TOKEN1, setUser1, setToken1);
     } else if (mToken && user2 == null && token2 == null) {
-      setUser(mToken.access_token, USER_KEYS.USER2, setUser2, setToken2);
+      setUser(mToken.access_token, USER_KEYS.USER2, TOKEN_KEYS.TOKEN2, setUser2, setToken2);
     }
 
     window.location.hash = "";
