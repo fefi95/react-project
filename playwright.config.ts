@@ -22,5 +22,8 @@ export default defineConfig({
     url: "http://localhost:5173",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
+    env: {
+      VITE_SPOTIFY_CLIENT_ID: process.env.VITE_SPOTIFY_CLIENT_ID ?? "test_client_id",
+    },
   },
 });

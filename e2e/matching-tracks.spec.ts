@@ -1,7 +1,9 @@
 import { test, expect, type Page, type Route } from "@playwright/test";
 import {
   mockUser1,
+  mockUser1Token,
   mockUser2,
+  mockUser2Token,
   mockUser1Tracks,
   mockUser2Tracks,
   mockTracks,
@@ -9,11 +11,28 @@ import {
 
 const setupUsers = async (page: Page) => {
   await page.addInitScript(
-    ({ u1, u2 }: { u1: typeof mockUser1; u2: typeof mockUser2 }) => {
+    ({
+      u1,
+      u2,
+      t1,
+      t2,
+    }: {
+      u1: typeof mockUser1;
+      u2: typeof mockUser2;
+      t1: string;
+      t2: string;
+    }) => {
       localStorage.setItem("USER1", JSON.stringify(u1));
       localStorage.setItem("USER2", JSON.stringify(u2));
+      sessionStorage.setItem("TOKEN1", t1);
+      sessionStorage.setItem("TOKEN2", t2);
     },
-    { u1: mockUser1, u2: mockUser2 },
+    {
+      u1: mockUser1,
+      u2: mockUser2,
+      t1: mockUser1Token,
+      t2: mockUser2Token,
+    },
   );
 };
 
@@ -27,7 +46,7 @@ const mockTopTracks = async (
     const authHeader: string = request.headers()["authorization"] ?? "";
     const token = authHeader.replace("Bearer ", "");
 
-    const tracks = token === mockUser1.token ? token1Tracks : token2Tracks;
+    const tracks = token === mockUser1Token ? token1Tracks : token2Tracks;
 
     await route.fulfill({
       json: { items: tracks, next: null, previous: null },
@@ -213,7 +232,7 @@ test.describe("Matching Tracks Page", () => {
 
       await route.fulfill({
         json: {
-          items: token === mockUser1.token ? user1Only : user2Only,
+          items: token === mockUser1Token ? user1Only : user2Only,
           next: null,
           previous: null,
         },

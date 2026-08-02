@@ -1,5 +1,5 @@
 import { Box, Container, Heading, Text, VStack } from "@chakra-ui/react";
-import ErrorBoundary from "./components/ErrorBoundary";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 interface LayoutProps {
   children: React.ReactElement;

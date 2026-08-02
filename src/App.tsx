@@ -2,9 +2,10 @@ import AuthorizationPage from "./pages/AuthorizationPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MatchingTracks from "./pages/MatchingTracksPage.tsx";
 import { UsersContext } from "./contexts/User.ts";
-import { User } from "./services/spotify.ts";
+import { type User } from "./services/spotify.ts";
 import { useState } from "react";
 import Layout from "./Layout.tsx";
+import { getStoredUser, getStoredToken, USER_KEYS, TOKEN_KEYS } from "./services/storage.ts";
 
 const router = createBrowserRouter([
   {
@@ -26,20 +27,14 @@ const router = createBrowserRouter([
 ]);
 
 const App = (): JSX.Element => {
-  const USER1 = "USER1";
-  const USER2 = "USER2";
-
-  const getUser = (user: string): User | null => {
-    const u1 = localStorage.getItem(user);
-    return u1 !== null ? JSON.parse(u1) : null;
-  };
-
-  const user1S = useState<User | null>(getUser(USER1) || null);
-  const user2S = useState<User | null>(getUser(USER2) || null);
+  const user1S = useState<User | null>(() => getStoredUser(USER_KEYS.USER1));
+  const user2S = useState<User | null>(() => getStoredUser(USER_KEYS.USER2));
+  const token1S = useState<string | null>(() => getStoredToken(TOKEN_KEYS.TOKEN1));
+  const token2S = useState<string | null>(() => getStoredToken(TOKEN_KEYS.TOKEN2));
 
   return (
     <>
-      <UsersContext.Provider value={{ user1S, user2S }}>
+      <UsersContext.Provider value={{ user1S, user2S, token1S, token2S }}>
         <RouterProvider router={router} />
       </UsersContext.Provider>
     </>

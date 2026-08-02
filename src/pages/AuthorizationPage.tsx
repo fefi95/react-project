@@ -14,26 +14,30 @@ import {
   getProfile,
   getTokenFromURL,
 } from "../services/spotify";
-import Profile from "../components/Profile";
+import { Profile } from "../components/Profile";
 import { useAuthContext } from "../contexts/User";
+import { saveUser, saveToken, USER_KEYS, TOKEN_KEYS } from "../services/storage";
 
 const AuthorizationPage = (): JSX.Element => {
-  const USER1 = "USER1";
-  const USER2 = "USER2";
-
   const {
     user1S: [user1, setUser1],
     user2S: [user2, setUser2],
+    token1S: [token1, setToken1],
+    token2S: [token2, setToken2],
   } = useAuthContext();
 
   const setUser = async (
     token: string,
-    user: string,
+    userKey: typeof USER_KEYS.USER1 | typeof USER_KEYS.USER2,
+    tokenKey: typeof TOKEN_KEYS.TOKEN1 | typeof TOKEN_KEYS.TOKEN2,
     setUserFunc: React.Dispatch<React.SetStateAction<User | null>>,
+    setTokenFunc: React.Dispatch<React.SetStateAction<string | null>>,
   ): Promise<void> => {
-    const u1 = await getProfile(token);
-    setUserFunc(u1);
-    localStorage.setItem(user, JSON.stringify(u1));
+    const profile = await getProfile(token);
+    setUserFunc(profile);
+    setTokenFunc(token);
+    saveUser(userKey, profile);
+    saveToken(tokenKey, token);
   };
 
   useEffect(() => {
@@ -43,10 +47,10 @@ const AuthorizationPage = (): JSX.Element => {
 
     const mToken = getTokenFromURL(window.location.hash);
 
-    if (mToken && user1 == null) {
-      setUser(mToken.access_token, USER1, setUser1);
-    } else if (mToken && user2 == null) {
-      setUser(mToken.access_token, USER2, setUser2);
+    if (mToken && user1 == null && token1 == null) {
+      setUser(mToken.access_token, USER_KEYS.USER1, TOKEN_KEYS.TOKEN1, setUser1, setToken1);
+    } else if (mToken && user2 == null && token2 == null) {
+      setUser(mToken.access_token, USER_KEYS.USER2, TOKEN_KEYS.TOKEN2, setUser2, setToken2);
     }
 
     window.location.hash = "";

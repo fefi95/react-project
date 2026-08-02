@@ -77,7 +77,6 @@ describe("getProfile", () => {
 
     expect(result).toEqual({
       id: "spotify_user_id",
-      token: "my_token",
       username: "Test User",
       photoUrl: "",
     });
