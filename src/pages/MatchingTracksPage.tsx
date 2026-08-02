@@ -56,7 +56,7 @@ const MatchingTracks = (): JSX.Element => {
 
     fetchTopTracks(token1, setUser1TopTracks);
     fetchTopTracks(token2, setUser2TopTracks);
-  }, []);
+  }, [user1, user2, token1, token2, navigate]);
 
   const [matchingTracks, stats] = useMemo(() => {
     const mt = getMatchingTracks(user1TopTracks, user2TopTracks);

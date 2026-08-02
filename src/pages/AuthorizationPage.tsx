@@ -22,8 +22,8 @@ const AuthorizationPage = (): JSX.Element => {
   const {
     user1S: [user1, setUser1],
     user2S: [user2, setUser2],
-    token1S: [, setToken1],
-    token2S: [, setToken2],
+    token1S: [token1, setToken1],
+    token2S: [token2, setToken2],
   } = useAuthContext();
 
   const setUser = async (
@@ -45,9 +45,9 @@ const AuthorizationPage = (): JSX.Element => {
 
     const mToken = getTokenFromURL(window.location.hash);
 
-    if (mToken && user1 == null) {
+    if (mToken && user1 == null && token1 == null) {
       setUser(mToken.access_token, USER_KEYS.USER1, setUser1, setToken1);
-    } else if (mToken && user2 == null) {
+    } else if (mToken && user2 == null && token2 == null) {
       setUser(mToken.access_token, USER_KEYS.USER2, setUser2, setToken2);
     }
 

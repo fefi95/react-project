@@ -27,8 +27,8 @@ const router = createBrowserRouter([
 ]);
 
 const App = (): JSX.Element => {
-  const user1S = useState<User | null>(getStoredUser(USER_KEYS.USER1));
-  const user2S = useState<User | null>(getStoredUser(USER_KEYS.USER2));
+  const user1S = useState<User | null>(() => getStoredUser(USER_KEYS.USER1));
+  const user2S = useState<User | null>(() => getStoredUser(USER_KEYS.USER2));
   const token1S = useState<string | null>(null);
   const token2S = useState<string | null>(null);
 

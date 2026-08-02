@@ -37,7 +37,12 @@ export interface TopResponse {
 
 export const authorizationLink = (): string => {
   const endpoint = "https://accounts.spotify.com/authorize";
-  const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID as string;
+  const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+  if (typeof clientId !== "string" || clientId.length === 0) {
+    throw new Error(
+      "Missing VITE_SPOTIFY_CLIENT_ID environment variable. Set it in your .env file.",
+    );
+  }
   const redirectUri = "http://localhost:5173/";
   const scopes = ["user-top-read", "user-read-private", "user-read-email"];
 
@@ -47,18 +52,24 @@ export const authorizationLink = (): string => {
 };
 
 export const getTokenFromURL = (query: string): AuthenticationToken | null => {
-  return query
-    ? (query
-        .substring(1)
-        .split("&")
-        .reduce(function (initial: Record<string, string>, item) {
-          if (item) {
-            const parts = item.split("=");
-            initial[parts[0]] = decodeURIComponent(parts[1]);
-          }
-          return initial;
-        }, {}) as unknown as AuthenticationToken)
-    : null;
+  if (!query) {
+    return null;
+  }
+
+  const params = new URLSearchParams(query.substring(1));
+  const accessToken = params.get("access_token");
+  const tokenType = params.get("token_type");
+  const expiresIn = params.get("expires_in");
+
+  if (accessToken == null || tokenType == null || expiresIn == null) {
+    return null;
+  }
+
+  return {
+    access_token: accessToken,
+    token_type: tokenType,
+    expires_in: expiresIn,
+  };
 };
 
 const fetchWebApi = async <T = unknown>(

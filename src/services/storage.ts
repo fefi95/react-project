@@ -12,7 +12,19 @@ export const saveUser = (
 
 export const getStoredUser = (key: string): User | null => {
   const raw = localStorage.getItem(key);
-  return raw !== null ? (JSON.parse(raw) as User) : null;
+  if (raw === null) {
+    return null;
+  }
+  try {
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    return {
+      id: String(parsed.id ?? ""),
+      username: String(parsed.username ?? ""),
+      photoUrl: typeof parsed.photoUrl === "string" ? parsed.photoUrl : null,
+    };
+  } catch {
+    return null;
+  }
 };
 
 export const USER_KEYS = { USER1: USER1_KEY, USER2: USER2_KEY } as const;
